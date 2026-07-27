@@ -248,3 +248,145 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Confirmar equipe"
+
+[node name="ExpeditionSetupScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=1954317714]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SetupTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=823808860]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PREPARAR EXPEDIÇÃO"
+
+[node name="SelectedTeamLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=376328915]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Equipe: nenhum aventureiro selecionado"
+
+[node name="SetupDivider" type="HSeparator" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=820738980]
+layout_mode = 2
+
+[node name="LeadershipPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=1996421442]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel" unique_id=1254792511]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="LeadershipContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer" unique_id=1221729811]
+visible = false
+layout_mode = 2
+
+[node name="LeadershipTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent" unique_id=185578407]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "LIDERANÇA"
+
+[node name="LeaderRow" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent" unique_id=701372898]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LeaderLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/LeaderRow" unique_id=447905587]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+text = "Líder:"
+
+[node name="LeaderOption" type="OptionButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/LeaderRow" unique_id=382215129]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SuccessorRow" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent" unique_id=1028859581]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SuccessorLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/SuccessorRow" unique_id=1401591680]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sucessor:"
+
+[node name="SuccessorOption" type="OptionButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/SuccessorRow" unique_id=1405969966]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+
+[node name="EquipmentPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=1385296323]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel" unique_id=2104336388]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="EquipmentContet" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer" unique_id=1856992449]
+layout_mode = 2
+
+[node name="EquipmentTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=755359073]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "EQUIPAMENTOS DA COMPANHIA"
+
+[node name="EquipmentInstruction" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=1428918486]
+layout_mode = 2
+text = "Escolha 2 equipamentos para levar."
+
+[node name="EquipmentGrid" type="GridContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=836890925]
+layout_mode = 2
+columns = 3
+
+[node name="RopeEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=1428889258]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 110)
+layout_mode = 2
+text = "CORDA
+
+Permite resgates,
+escaladas e rotas verticais."
+
+[node name="LanternEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=84259316]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 110)
+layout_mode = 2
+text = "LANTERNA PROTEGIDA
+
+Reduz riscos na escuridão,
+mas pode revelar a equipe."
+
+[node name="MedicalKitEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=474733072]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 110)
+layout_mode = 2
+text = "KIT MÉDICO
+
+Permite estabilizar
+ferimentos durante a missão."
+
+[node name="SetupStatusLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=251075358]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Defina líder, sucessor e dois equipamentos."
+
+[node name="SetupSpacer" type="Control" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=1196066156]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SetupActions" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen" unique_id=37211166]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BackToTeamButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/SetupActions" unique_id=1654042220]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Voltar à equipe"
+
+[node name="BeginExpeditionButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/SetupActions" unique_id=125798561]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Iniciar expedição"
