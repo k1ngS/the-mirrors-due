@@ -37,37 +37,214 @@ layout_mode = 2
 size_flags_horizontal = 13
 size_flags_vertical = 13
 
-[node name="Content" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=757215562]
+[node name="HomeScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=757215562]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 13
 size_flags_vertical = 13
 
-[node name="TitleLabel" type="Label" parent="ScreenContainer/MainPanel/Content" unique_id=150858321]
+[node name="TitleLabel" type="Label" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=150858321]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "THE MIRROR'S DUE"
 
-[node name="DayLabel" type="Label" parent="ScreenContainer/MainPanel/Content" unique_id=1347575105]
+[node name="DayLabel" type="Label" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1347575105]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Dia 1 — A Herança"
 
-[node name="Dividr" type="HSeparator" parent="ScreenContainer/MainPanel/Content" unique_id=1624042508]
+[node name="Dividr" type="HSeparator" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1624042508]
 layout_mode = 2
 
-[node name="DescriptionLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/Content" unique_id=2071792543]
+[node name="DescriptionLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=2071792543]
 layout_mode = 2
 text = "A companhia está endividada. A primeira parcela vence em poucos dias.
 
 Um contrato espera sobre a mesa."
 fit_content = true
 
-[node name="Spacer" type="Control" parent="ScreenContainer/MainPanel/Content" unique_id=1876299896]
+[node name="Spacer" type="Control" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1876299896]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="StartContractButton" type="Button" parent="ScreenContainer/MainPanel/Content" unique_id=1969182601]
+[node name="StartContractButton" type="Button" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1969182601]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 52)
 layout_mode = 2
 text = "Examinar contrato"
+
+[node name="ContractScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=539632434]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ContractTitle" type="Label" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=646389973]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "A LUZ SOB O POÇO"
+
+[node name="ContractClient" type="Label" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=1549910879]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Contratante: Companhia de Águas de Vargem"
+
+[node name="ContractDivider" type="HSeparator" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=722891365]
+layout_mode = 2
+
+[node name="ContractDescription" type="RichTextLabel" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=1092937261]
+layout_mode = 2
+text = "Três trabalhadores desapareceram durante uma inspeção na antiga cisterna do Bairro Baixo.
+
+O contratante afirma que um desabamento bloqueou a saída. A equipe deverá localizar os trabalhadores, recuperar os registros da inspeção e avaliar a estabilidade da estrutura.
+
+O pagamento está acima da média para um resgate comum."
+fit_content = true
+
+[node name="ContractDetailsPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=1710658483]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel" unique_id=13292380]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="ContractDetails" type="VBoxContainer" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel/MarginContainer" unique_id=1527255951]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel/MarginContainer/ContractDetails" unique_id=478691996]
+layout_mode = 2
+text = "Recompensa: 180 moedas"
+
+[node name="Label2" type="Label" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel/MarginContainer/ContractDetails" unique_id=1711052243]
+layout_mode = 2
+text = "Risco informado: Moderado"
+
+[node name="Label3" type="Label" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel/MarginContainer/ContractDetails" unique_id=1779673022]
+layout_mode = 2
+text = "Duração estimada: Curta"
+
+[node name="Label4" type="Label" parent="ScreenContainer/MainPanel/ContractScreen/ContractDetailsPanel/MarginContainer/ContractDetails" unique_id=385298544]
+layout_mode = 2
+text = "Informações disponíveis: Incompletas"
+
+[node name="ContractSpacer" type="Control" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=1709888865]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContractActions" type="HBoxContainer" parent="ScreenContainer/MainPanel/ContractScreen" unique_id=2128905121]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BackToHomeButton" type="Button" parent="ScreenContainer/MainPanel/ContractScreen/ContractActions" unique_id=851354658]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Voltar"
+
+[node name="InvestigateButton" type="Button" parent="ScreenContainer/MainPanel/ContractScreen/ContractActions" unique_id=1184278329]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Investigar"
+
+[node name="PrepareTeamButton" type="Button" parent="ScreenContainer/MainPanel/ContractScreen/ContractActions" unique_id=1981800061]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Preparar equipe"
+
+[node name="TeamSelectionScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=241104732]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="TeamTitle" type="Label" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=738910756]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PREPARAR EQUIPE"
+
+[node name="TeamInstruction" type="Label" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=1352983060]
+layout_mode = 2
+text = "Escolha 3 aventureiros para a missão."
+
+[node name="TeamDivider" type="HSeparator" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=1132604778]
+layout_mode = 2
+
+[node name="AdventurerGrid" type="GridContainer" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=481106635]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="MaraCard" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/AdventurerGrid" unique_id=589638013]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 130)
+layout_mode = 2
+toggle_mode = true
+text = "MARA VELN
+Antiga soldada
+
+Força 4 | Percepção 2
+Técnica 2 | Vontade 4
+
+Disciplinada • Protetora"
+
+[node name="IvenCard" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/AdventurerGrid" unique_id=1181399057]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 130)
+layout_mode = 2
+toggle_mode = true
+text = "IVEN DORR
+Antigo mineiro
+
+Força 3 | Percepção 4
+Técnica 4 | Vontade 2
+
+Cauteloso • Claustrofóbico"
+
+[node name="SelkaCard" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/AdventurerGrid" unique_id=1494398989]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 130)
+layout_mode = 2
+toggle_mode = true
+text = "SELKA VALE
+Ajudante de boticário
+
+Força 1 | Percepção 3
+Técnica 4 | Vontade 4
+
+Compassiva • Determinada"
+
+[node name="OrrenCard" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/AdventurerGrid" unique_id=709180945]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 130)
+layout_mode = 2
+toggle_mode = true
+text = "ORREN VASK
+Contrabandista
+
+Força 2 | Percepção 4
+Técnica 3 | Vontade 3
+
+Oportunista • Desconfiado"
+
+[node name="SelectionStatusLabel" type="Label" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=1856182780]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Selecionados: 0 / 3"
+
+[node name="TeamSpacer" type="Control" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=1812016347]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TeamActions" type="HBoxContainer" parent="ScreenContainer/MainPanel/TeamSelectionScreen" unique_id=881576146]
+layout_mode = 2
+
+[node name="BackToContractButton" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/TeamActions" unique_id=1790103611]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Voltar ao contrato"
+
+[node name="ConfirmTeamButton" type="Button" parent="ScreenContainer/MainPanel/TeamSelectionScreen/TeamActions" unique_id=1095359487]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Confirmar equipe"
