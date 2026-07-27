@@ -3,6 +3,7 @@ extends Control
 const MAX_TEAM_SIZE: int = 3
 const MAX_EQUIPMENT: int = 2
 const MAX_MIRROR_CHARGES: int = 2
+const TUNNEL_STAGE_INDEX: int = 2
 
 const ADVENTURER_NAMES: Dictionary = {
 	"MaraCard": "Mara Veln",
@@ -39,6 +40,11 @@ const EXPEDITION_STAGES: Array[Dictionary] = [
 @onready var team_selection_screen: VBoxContainer = %TeamSelectionScreen
 @onready var expedition_setup_screen: VBoxContainer = %ExpeditionSetupScreen
 @onready var expedition_screen: VBoxContainer = %ExpeditionScreen
+@onready var decision_panel: PanelContainer = %DecisionPanel
+@onready var decision_description: RichTextLabel = %DecisionDescription
+
+@onready var footprints_route_button: Button = %FootprintsRouteButton
+@onready var tool_marks_route_button: Button = %ToolMarksRouteButton
 
 @onready var start_contract_button: Button = %StartContractButton
 @onready var back_to_home_button: Button = %BackToHomeButton
@@ -94,6 +100,15 @@ var mirror_charges: int = MAX_MIRROR_CHARGES
 var expedition_leader_name: String = ""
 var expedition_successor_name: String = ""
 var expedition_log_entries: Array[String] = []
+var expedition_equipment: Array[String] = []
+
+var current_event_requires_decision: bool = false
+var tunnel_decision_resolved: bool = false
+
+var mara_trust: int = 0
+var iven_trust: int = 0
+var selka_trust: int = 0
+var orren_trust: int = 0
 
 func _ready() -> void:
 	start_contract_button.pressed.connect(show_contract_screen)
@@ -114,6 +129,14 @@ func _ready() -> void:
 	send_order_button.pressed.connect(_on_send_order_pressed)
 	advance_stage_button.pressed.connect(_on_advance_stage_pressed)
 	end_expedition_button.pressed.connect(_on_end_expedition_pressed)
+
+	footprints_route_button.pressed.connect(
+		_on_footprints_route_pressed
+	)
+
+	tool_marks_route_button.pressed.connect(
+		_on_tool_marks_route_pressed
+	)
 
 	for card: Button in adventurer_cards:
 		card.toggled.connect(_on_adventurer_card_toggled)
@@ -290,12 +313,19 @@ func _on_begin_expedition_pressed() -> void:
 		successor_option.selected
 	)
 
+	expedition_equipment = get_selected_equipment()
+
 	start_expedition()
 
 func start_expedition() -> void:
 	current_expedition_stage = 0
 	mirror_charges = MAX_MIRROR_CHARGES
 	expedition_log_entries.clear()
+
+	current_event_requires_decision = false
+	tunnel_decision_resolved = false
+
+	decision_panel.hide()
 
 	hide_all_screens()
 	expedition_screen.show()
@@ -345,6 +375,11 @@ func update_expedition_screen() -> void:
 
 	advance_stage_button.visible = not is_final_stage
 	end_expedition_button.visible = is_final_stage
+
+	if current_event_requires_decision:
+		advance_stage_button.disabled = true
+	else:
+		advance_stage_button.disabled = false
 
 	if is_final_stage:
 		expedition_status_label.text = (
@@ -439,12 +474,19 @@ func _on_send_order_pressed() -> void:
 
 
 func _on_advance_stage_pressed() -> void:
+	if current_event_requires_decision:
+		return
+
 	if current_expedition_stage >= EXPEDITION_STAGES.size() - 1:
 		return
 
 	current_expedition_stage += 1
 
 	add_current_stage_event()
+
+	if current_expedition_stage == TUNNEL_STAGE_INDEX:
+		start_tunnel_decision()
+
 	update_expedition_screen()
 
 
@@ -466,3 +508,166 @@ func _on_end_expedition_pressed() -> void:
 	print("Líder: ", expedition_leader_name)
 	print("Sucessor: ", expedition_successor_name)
 	print("Cargas restantes: ", mirror_charges)
+
+func start_tunnel_decision() -> void:
+	if tunnel_decision_resolved:
+		return
+
+	current_event_requires_decision = true
+	decision_panel.show()
+
+	decision_description.text = (
+		"[b]Duas rotas se abrem diante da equipe.[/b]\n\n"
+		+"À esquerda, pegadas recentes seguem por um túnel estreito "
+		+"e parcialmente inundado.\n\n"
+		+"À direita, marcas de ferramentas levam a uma passagem antiga "
+		+"que parece mais estável, mas não há sinais dos trabalhadores."
+	)
+
+	expedition_status_label.text = (
+		"A equipe precisa escolher uma rota antes de avançar."
+	)
+
+	advance_stage_button.disabled = true
+
+func team_has_adventurer(adventurer_id: String) -> bool:
+	return adventurer_id in selected_team
+
+func expedition_has_equipment(equipment_id: String) -> bool:
+	return equipment_id in expedition_equipment
+
+func _on_footprints_route_pressed() -> void:
+	var result_lines: Array[String] = []
+
+	result_lines.append(
+		"[color=gold][b]A equipe segue as pegadas.[/b][/color]"
+	)
+
+	var success_score: int = 0
+
+	if team_has_adventurer("OrrenCard"):
+		success_score += 2
+		orren_trust += 1
+
+		result_lines.append(
+			"Orren reconhece sinais de movimentação recente "
+			+"e impede que o grupo siga uma trilha falsa."
+		)
+
+	if team_has_adventurer("SelkaCard"):
+		success_score += 1
+
+		result_lines.append(
+			"Selka identifica manchas de sangue diluídas pela água."
+		)
+
+	if expedition_has_equipment("LanternEquipment"):
+		success_score += 1
+
+		result_lines.append(
+			"A lanterna revela pegadas parcialmente submersas."
+		)
+
+	if expedition_leader_name == "Mara Veln":
+		success_score += 1
+		mara_trust += 1
+
+		result_lines.append(
+			"Mara mantém a formação e impede que o grupo se separe."
+		)
+
+	if success_score >= 3:
+		result_lines.append(
+			"\n[b]Resultado:[/b] a equipe encontra um trabalhador "
+			+"ferido, mas ainda vivo."
+		)
+
+		selka_trust += 1
+	else:
+		result_lines.append(
+			"\n[b]Resultado:[/b] a rota termina em uma área instável. "
+			+"A equipe perde tempo e retorna sob forte tensão."
+		)
+
+		mara_trust -= 1
+
+	resolve_tunnel_decision(result_lines)
+
+func _on_tool_marks_route_pressed() -> void:
+	var result_lines: Array[String] = []
+
+	result_lines.append(
+		"[color=light_blue][b]"
+		+"A equipe segue as marcas de ferramentas."
+		+"[/b][/color]"
+	)
+
+	var success_score: int = 0
+
+	if team_has_adventurer("IvenCard"):
+		success_score += 3
+		iven_trust += 1
+
+		result_lines.append(
+			"Iven reconhece técnicas antigas de escavação "
+			+"e identifica uma parede recentemente alterada."
+		)
+
+	if expedition_has_equipment("LanternEquipment"):
+		success_score += 1
+
+		result_lines.append(
+			"A lanterna permite examinar as rachaduras com segurança."
+		)
+
+	if expedition_has_equipment("RopeEquipment"):
+		success_score += 1
+
+		result_lines.append(
+			"A corda permite atravessar uma seção parcialmente desabada."
+		)
+
+	if expedition_leader_name == "Iven Dorr":
+		success_score += 1
+		iven_trust += 1
+
+		result_lines.append(
+			"Sob a liderança de Iven, a equipe avança com cuidado."
+		)
+
+	if success_score >= 3:
+		result_lines.append(
+			"\n[b]Resultado:[/b] a equipe encontra os registros "
+			+"da inspeção e provas de que o contratante omitiu riscos."
+		)
+	else:
+		result_lines.append(
+			"\n[b]Resultado:[/b] a equipe encontra uma passagem bloqueada "
+			+"e precisa retornar sem os registros."
+		)
+
+	resolve_tunnel_decision(result_lines)
+
+func resolve_tunnel_decision(result_lines: Array[String]) -> void:
+	tunnel_decision_resolved = true
+	current_event_requires_decision = false
+
+	decision_panel.hide()
+	advance_stage_button.disabled = false
+
+	add_expedition_log(
+		"\n".join(result_lines)
+	)
+
+	expedition_status_label.text = (
+		"A rota foi escolhida. A equipe pode continuar."
+	)
+
+	print_relationship_debug()
+
+func print_relationship_debug() -> void:
+	print("CONFIANÇA ATUAL")
+	print("Mara: ", mara_trust)
+	print("Iven: ", iven_trust)
+	print("Selka: ", selka_trust)
+	print("Orren: ", orren_trust)

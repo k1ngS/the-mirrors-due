@@ -515,6 +515,49 @@ theme_override_font_sizes/normal_font_size = 17
 theme_override_font_sizes/bold_font_size = 17
 bbcode_enabled = true
 
+[node name="DecisionPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=804833214]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel" unique_id=2004852877]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="DecisionContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer" unique_id=447368470]
+layout_mode = 2
+
+[node name="DecisionTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer/DecisionContent" unique_id=2007168259]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "DECISÃO NECESSÁRIA"
+
+[node name="DecisionDescription" type="RichTextLabel" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer/DecisionContent" unique_id=374168603]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "A equipe precisa decidir qual caminho seguir."
+fit_content = true
+
+[node name="DecisionActions" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer/DecisionContent" unique_id=879194267]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="FootprintsRouteButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer/DecisionContent/DecisionActions" unique_id=350905898]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 52)
+layout_mode = 2
+text = "Seguir as pegadas"
+
+[node name="ToolMarksRouteButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/DecisionPanel/MarginContainer/DecisionContent/DecisionActions" unique_id=1389893585]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 52)
+layout_mode = 2
+text = "Seguir as marcas de ferramentas"
+
 [node name="ExpeditionStatusLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=492228754]
 unique_name_in_owner = true
 layout_mode = 2
