@@ -34,8 +34,6 @@ theme_override_constants/margin_bottom = 36
 
 [node name="MainPanel" type="PanelContainer" parent="ScreenContainer" unique_id=510459639]
 layout_mode = 2
-size_flags_horizontal = 13
-size_flags_vertical = 13
 
 [node name="HomeScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=757215562]
 unique_name_in_owner = true
@@ -390,3 +388,161 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Iniciar expedição"
+
+[node name="ExpeditionScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=585110919]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ExpeditionTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=288349693]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "A LUZ SOB O POÇO"
+
+[node name="ExpeditionHeader" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=440871672]
+layout_mode = 2
+theme_override_constants/separation = 36
+
+[node name="CurrentStageLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionHeader" unique_id=1640364893]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Etapa: Entrada da Cisterna"
+
+[node name="MirrorChargesLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionHeader" unique_id=367789937]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Espelho: 2 cargas"
+
+[node name="LeaderStatusLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionHeader" unique_id=1482458697]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Líder: não definido"
+
+[node name="ExpeditionDivider" type="HSeparator" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=1783556090]
+layout_mode = 2
+
+[node name="MapPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=1935285631]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel" unique_id=417433031]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="MapContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer" unique_id=2011020201]
+layout_mode = 2
+
+[node name="MapTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent" unique_id=475054977]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "ROTA DA EXPEDIÇÃO"
+
+[node name="StageTrack" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent" unique_id=853295338]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="StageEntrance" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent/StageTrack" unique_id=1404631071]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 74)
+layout_mode = 2
+disabled = true
+text = "1
+Entrada"
+
+[node name="StageFloodedPassage" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent/StageTrack" unique_id=452165929]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 74)
+layout_mode = 2
+disabled = true
+text = "2
+Passagem"
+
+[node name="StageSplitTunnel" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent/StageTrack" unique_id=1674847826]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 74)
+layout_mode = 2
+disabled = true
+text = "3
+Túnel"
+
+[node name="StageMirrorChamber" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent/StageTrack" unique_id=1839097769]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 74)
+layout_mode = 2
+disabled = true
+text = "4
+Câmara"
+
+[node name="StageReturnRoute" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/MapPanel/MarginContainer/MapContent/StageTrack" unique_id=1856495401]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 74)
+layout_mode = 2
+disabled = true
+text = "5
+Retorno"
+
+[node name="EventPanel" type="PanelContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=1499509086]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/EventPanel" unique_id=1384366462]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="EventContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen/EventPanel/MarginContainer" unique_id=1764329237]
+layout_mode = 2
+
+[node name="EventTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen/EventPanel/MarginContainer/EventContent" unique_id=451289720]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "RELATÓRIO DO ESPELHO"
+
+[node name="EventLog" type="RichTextLabel" parent="ScreenContainer/MainPanel/ExpeditionScreen/EventPanel/MarginContainer/EventContent" unique_id=1423476232]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_separation = 3
+theme_override_constants/paragraph_separation = 8
+theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/bold_font_size = 17
+bbcode_enabled = true
+
+[node name="ExpeditionStatusLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=492228754]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "A equipe aguarda instruções."
+
+[node name="ExpeditionActions" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=573505844]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="ObserveButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionActions" unique_id=367878708]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Observar pelo espelho"
+
+[node name="SendOrderButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionActions" unique_id=898226121]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Transmitir ordem"
+
+[node name="AdvanceStageButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionActions" unique_id=1059976177]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Avançar equipe"
+
+[node name="EndExpeditionButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionActions" unique_id=1336923062]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Retornar à guilda"

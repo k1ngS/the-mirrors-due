@@ -2,6 +2,7 @@ extends Control
 
 const MAX_TEAM_SIZE: int = 3
 const MAX_EQUIPMENT: int = 2
+const MAX_MIRROR_CHARGES: int = 2
 
 const ADVENTURER_NAMES: Dictionary = {
 	"MaraCard": "Mara Veln",
@@ -10,10 +11,34 @@ const ADVENTURER_NAMES: Dictionary = {
 	"OrrenCard": "Orren Vask",
 }
 
+const EXPEDITION_STAGES: Array[Dictionary] = [
+	{
+		"name": "Entrada da Cisterna",
+		"event": "A equipe alcança a entrada da antiga cisterna. Marcas recentes indicam que alguém entrou depois do desaparecimento dos trabalhadores."
+	},
+	{
+		"name": "Passagem Inundada",
+		"event": "A água chega à cintura. A corrente está mais forte do que o contratante informou, e parte do equipamento precisa ser mantida acima da superfície."
+	},
+	{
+		"name": "Túnel Dividido",
+		"event": "A equipe encontra duas rotas. Uma delas apresenta pegadas recentes; a outra possui marcas de ferramentas nas paredes."
+	},
+	{
+		"name": "Câmara do Espelho",
+		"event": "Um brilho fraco surge sob a água. Fragmentos semelhantes ao vidro cobrem uma estrutura ritualística quebrada."
+	},
+	{
+		"name": "Rota de Retorno",
+		"event": "A estrutura começa a ceder. A equipe precisa retornar carregando tudo o que encontrou — e talvez alguém que já não consiga caminhar."
+	},
+]
+
 @onready var home_screen: VBoxContainer = %HomeScreen
 @onready var contract_screen: VBoxContainer = %ContractScreen
 @onready var team_selection_screen: VBoxContainer = %TeamSelectionScreen
 @onready var expedition_setup_screen: VBoxContainer = %ExpeditionSetupScreen
+@onready var expedition_screen: VBoxContainer = %ExpeditionScreen
 
 @onready var start_contract_button: Button = %StartContractButton
 @onready var back_to_home_button: Button = %BackToHomeButton
@@ -31,6 +56,17 @@ const ADVENTURER_NAMES: Dictionary = {
 @onready var back_to_team_button: Button = %BackToTeamButton
 @onready var begin_expedition_button: Button = %BeginExpeditionButton
 
+@onready var current_stage_label: Label = %CurrentStageLabel
+@onready var mirror_charges_label: Label = %MirrorChargesLabel
+@onready var leader_status_label: Label = %LeaderStatusLabel
+@onready var expedition_status_label: Label = %ExpeditionStatusLabel
+@onready var event_log: RichTextLabel = %EventLog
+
+@onready var observe_button: Button = %ObserveButton
+@onready var send_order_button: Button = %SendOrderButton
+@onready var advance_stage_button: Button = %AdvanceStageButton
+@onready var end_expedition_button: Button = %EndExpeditionButton
+
 @onready var adventurer_cards: Array[Button] = [
 	%MaraCard,
 	%IvenCard,
@@ -44,7 +80,20 @@ const ADVENTURER_NAMES: Dictionary = {
 	%MedicalKitEquipment,
 ]
 
+@onready var stage_buttons: Array[Button] = [
+	%StageEntrance,
+	%StageFloodedPassage,
+	%StageSplitTunnel,
+	%StageMirrorChamber,
+	%StageReturnRoute,
+]
+
 var selected_team: Array[String] = []
+var current_expedition_stage: int = 0
+var mirror_charges: int = MAX_MIRROR_CHARGES
+var expedition_leader_name: String = ""
+var expedition_successor_name: String = ""
+var expedition_log_entries: Array[String] = []
 
 func _ready() -> void:
 	start_contract_button.pressed.connect(show_contract_screen)
@@ -61,6 +110,11 @@ func _ready() -> void:
 	leader_option.item_selected.connect(_on_leadership_changed)
 	successor_option.item_selected.connect(_on_leadership_changed)
 
+	observe_button.pressed.connect(_on_observe_pressed)
+	send_order_button.pressed.connect(_on_send_order_pressed)
+	advance_stage_button.pressed.connect(_on_advance_stage_pressed)
+	end_expedition_button.pressed.connect(_on_end_expedition_pressed)
+
 	for card: Button in adventurer_cards:
 		card.toggled.connect(_on_adventurer_card_toggled)
 
@@ -74,6 +128,7 @@ func hide_all_screens() -> void:
 	contract_screen.hide()
 	team_selection_screen.hide()
 	expedition_setup_screen.hide()
+	expedition_screen.hide()
 
 func show_home_screen() -> void:
 	hide_all_screens()
@@ -227,20 +282,187 @@ func _on_begin_expedition_pressed() -> void:
 	if begin_expedition_button.disabled:
 		return
 
-	var leader_name: String = leader_option.get_item_text(leader_option.selected)
-	var successor_name: String = successor_option.get_item_text(successor_option.selected)
+	expedition_leader_name = leader_option.get_item_text(
+		leader_option.selected
+	)
 
-	print("EXPEDIÇÂO CONFIRMADA")
-	print("Equipe:")
+	expedition_successor_name = successor_option.get_item_text(
+		successor_option.selected
+	)
 
-	for adventurer_name: String in get_selected_team_names():
-		print("- ", adventurer_name)
+	start_expedition()
 
-	print("Lider: ", leader_name)
-	print("Sucessor: ", successor_name)
-	print("Equipamentos:")
+func start_expedition() -> void:
+	current_expedition_stage = 0
+	mirror_charges = MAX_MIRROR_CHARGES
+	expedition_log_entries.clear()
 
-	for equipment_name: String in get_selected_equipment():
-		print("- ", equipment_name)
+	hide_all_screens()
+	expedition_screen.show()
 
-	print("Próximo destino: A Luz Sob o Poço")
+	leader_status_label.text = "Líder: %s" % expedition_leader_name
+
+	add_expedition_log(
+		"[b]A expedição começou.[/b]\n"
+		+"A equipe parte em direção à antiga cisterna."
+	)
+
+	add_current_stage_event()
+	update_expedition_screen()
+
+
+func update_expedition_screen() -> void:
+	var stage_data: Dictionary = EXPEDITION_STAGES[
+		current_expedition_stage
+	]
+
+	current_stage_label.text = "Etapa: %s" % stage_data["name"]
+
+	mirror_charges_label.text = "Espelho: %d carga(s)" % (
+		mirror_charges
+	)
+
+	observe_button.disabled = mirror_charges <= 0
+	send_order_button.disabled = mirror_charges <= 0
+
+	for index: int in range(stage_buttons.size()):
+		var stage_button: Button = stage_buttons[index]
+
+		if index < current_expedition_stage:
+			stage_button.text = "✓\n%s" % get_short_stage_name(index)
+		elif index == current_expedition_stage:
+			stage_button.text = "●\n%s" % get_short_stage_name(index)
+		else:
+			stage_button.text = "%d\n%s" % [
+				index + 1,
+				get_short_stage_name(index),
+			]
+
+	var is_final_stage: bool = (
+		current_expedition_stage
+		== EXPEDITION_STAGES.size() - 1
+	)
+
+	advance_stage_button.visible = not is_final_stage
+	end_expedition_button.visible = is_final_stage
+
+	if is_final_stage:
+		expedition_status_label.text = (
+			"A equipe está retornando. A missão pode ser encerrada."
+		)
+	else:
+		expedition_status_label.text = (
+			"A equipe aguarda o próximo avanço."
+		)
+
+
+func get_short_stage_name(index: int) -> String:
+	var short_names: Array[String] = [
+		"Entrada",
+		"Passagem",
+		"Túnel",
+		"Câmara",
+		"Retorno",
+	]
+
+	return short_names[index]
+
+
+func add_current_stage_event() -> void:
+	var stage_data: Dictionary = EXPEDITION_STAGES[
+		current_expedition_stage
+	]
+
+	add_expedition_log(
+		"[b]%s[/b]\n%s"
+		% [
+			stage_data["name"],
+			stage_data["event"],
+		]
+	)
+
+
+func add_expedition_log(entry: String) -> void:
+	expedition_log_entries.append(entry)
+
+	event_log.text = "\n\n".join(expedition_log_entries)
+
+	await get_tree().process_frame
+
+	var last_line: int = max(event_log.get_line_count() - 1, 0)
+	event_log.scroll_to_line(last_line)
+
+
+func consume_mirror_charge() -> bool:
+	if mirror_charges <= 0:
+		return false
+
+	mirror_charges -= 1
+	update_expedition_screen()
+
+	return true
+
+
+func _on_observe_pressed() -> void:
+	if not consume_mirror_charge():
+		return
+
+	var observations: Array[String] = [
+		"O espelho mostra imagens instáveis. A equipe permanece unida, mas alguém parece observar constantemente o caminho de volta.",
+		"Por alguns segundos, você vê o ambiente pelos olhos do líder. Há sinais de movimentação recente que não pertencem aos trabalhadores desaparecidos.",
+		"O reflexo apresenta uma distorção. Um dos aventureiros parece segurar algo que não estava entre os equipamentos da companhia.",
+	]
+
+	var observation_index: int = (
+		current_expedition_stage
+		% observations.size()
+	)
+
+	add_expedition_log(
+		"[color=light_blue][b]Observação pelo espelho[/b][/color]\n"
+		+ observations[observation_index]
+	)
+
+
+func _on_send_order_pressed() -> void:
+	if not consume_mirror_charge():
+		return
+
+	add_expedition_log(
+		"[color=gold][b]Ordem transmitida[/b][/color]\n"
+		+"Você ordena que a equipe permaneça unida e priorize a sobrevivência acima do objetivo."
+	)
+
+	expedition_status_label.text = (
+		"A ordem foi transmitida. Ainda não há garantia de obediência."
+	)
+
+
+func _on_advance_stage_pressed() -> void:
+	if current_expedition_stage >= EXPEDITION_STAGES.size() - 1:
+		return
+
+	current_expedition_stage += 1
+
+	add_current_stage_event()
+	update_expedition_screen()
+
+
+func _on_end_expedition_pressed() -> void:
+	add_expedition_log(
+		"[b]Expedição encerrada.[/b]\n"
+		+"A equipe retorna à companhia. O relatório completo ainda precisa ser analisado."
+	)
+
+	end_expedition_button.disabled = true
+	observe_button.disabled = true
+	send_order_button.disabled = true
+
+	expedition_status_label.text = (
+		"Missão concluída. O relatório será o próximo passo."
+	)
+
+	print("EXPEDIÇÃO CONCLUÍDA")
+	print("Líder: ", expedition_leader_name)
+	print("Sucessor: ", expedition_successor_name)
+	print("Cargas restantes: ", mirror_charges)
