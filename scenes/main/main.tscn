@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://k6ocbaibu0jf"]
+
+[ext_resource type="Script" uid="uid://bf7anpdvmoic0" path="res://scripts/ui/main.gd" id="1_hyk8p"]
+
+[node name="Main" type="Control" unique_id=1530024811]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hyk8p")
+
+[node name="Background" type="ColorRect" parent="." unique_id=839251362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09019608, 0.07450981, 0.05882353, 1)
+
+[node name="ScreenContainer" type="MarginContainer" parent="." unique_id=1800827850]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 36
+
+[node name="MainPanel" type="PanelContainer" parent="ScreenContainer" unique_id=510459639]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 13
+
+[node name="Content" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=757215562]
+layout_mode = 2
+size_flags_horizontal = 13
+size_flags_vertical = 13
+
+[node name="TitleLabel" type="Label" parent="ScreenContainer/MainPanel/Content" unique_id=150858321]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "THE MIRROR'S DUE"
+
+[node name="DayLabel" type="Label" parent="ScreenContainer/MainPanel/Content" unique_id=1347575105]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Dia 1 — A Herança"
+
+[node name="Dividr" type="HSeparator" parent="ScreenContainer/MainPanel/Content" unique_id=1624042508]
+layout_mode = 2
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/Content" unique_id=2071792543]
+layout_mode = 2
+text = "A companhia está endividada. A primeira parcela vence em poucos dias.
+
+Um contrato espera sobre a mesa."
+fit_content = true
+
+[node name="Spacer" type="Control" parent="ScreenContainer/MainPanel/Content" unique_id=1876299896]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StartContractButton" type="Button" parent="ScreenContainer/MainPanel/Content" unique_id=1969182601]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 52)
+layout_mode = 2
+text = "Examinar contrato"
