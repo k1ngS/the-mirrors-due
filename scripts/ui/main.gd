@@ -695,6 +695,8 @@ func resolve_footprints_route() -> void:
 
 		mara_trust -= 1
 
+	resolve_tunnel_decision(result_lines)
+
 func resolve_tool_marks_route() -> void:
 	var result_lines: Array[String] = []
 
@@ -749,6 +751,8 @@ func resolve_tool_marks_route() -> void:
 			"\n[b]Resultado:[/b] a equipe encontra uma passagem bloqueada "
 			+"e precisa retornar sem os registros."
 		)
+
+	resolve_tunnel_decision(result_lines)
 
 func resolve_worker_rescue() -> void:
 	var result_lines: Array[String] = []
