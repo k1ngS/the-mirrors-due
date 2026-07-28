@@ -43,7 +43,7 @@ size_flags_vertical = 13
 
 [node name="TitleLabel" type="Label" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=150858321]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 32
 text = "THE MIRROR'S DUE"
 
 [node name="DayLabel" type="Label" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1347575105]
@@ -51,7 +51,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Dia 1 — A Herança"
 
-[node name="Dividr" type="HSeparator" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1624042508]
+[node name="Divider" type="HSeparator" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=1624042508]
 layout_mode = 2
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/HomeScreen" unique_id=2071792543]
@@ -276,7 +276,6 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 16
 
 [node name="LeadershipContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer" unique_id=1221729811]
-visible = false
 layout_mode = 2
 
 [node name="LeadershipTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent" unique_id=185578407]
@@ -290,12 +289,12 @@ theme_override_constants/separation = 16
 
 [node name="LeaderLabel" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/LeaderRow" unique_id=447905587]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 42)
 layout_mode = 2
 text = "Líder:"
 
 [node name="LeaderOption" type="OptionButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent/LeaderRow" unique_id=382215129]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 42)
 layout_mode = 2
 
 [node name="SuccessorRow" type="HBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/LeadershipPanel/MarginContainer/LeadershipContent" unique_id=1028859581]
@@ -322,23 +321,23 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 16
 
-[node name="EquipmentContet" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer" unique_id=1856992449]
+[node name="EquipmentContent" type="VBoxContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer" unique_id=1856992449]
 layout_mode = 2
 
-[node name="EquipmentTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=755359073]
+[node name="EquipmentTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent" unique_id=755359073]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "EQUIPAMENTOS DA COMPANHIA"
 
-[node name="EquipmentInstruction" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=1428918486]
+[node name="EquipmentInstruction" type="Label" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent" unique_id=1428918486]
 layout_mode = 2
 text = "Escolha 2 equipamentos para levar."
 
-[node name="EquipmentGrid" type="GridContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet" unique_id=836890925]
+[node name="EquipmentGrid" type="GridContainer" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent" unique_id=836890925]
 layout_mode = 2
 columns = 3
 
-[node name="RopeEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=1428889258]
+[node name="RopeEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent/EquipmentGrid" unique_id=1428889258]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 110)
 layout_mode = 2
@@ -347,7 +346,7 @@ text = "CORDA
 Permite resgates,
 escaladas e rotas verticais."
 
-[node name="LanternEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=84259316]
+[node name="LanternEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent/EquipmentGrid" unique_id=84259316]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 110)
 layout_mode = 2
@@ -356,7 +355,7 @@ text = "LANTERNA PROTEGIDA
 Reduz riscos na escuridão,
 mas pode revelar a equipe."
 
-[node name="MedicalKitEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContet/EquipmentGrid" unique_id=474733072]
+[node name="MedicalKitEquipment" type="CheckButton" parent="ScreenContainer/MainPanel/ExpeditionSetupScreen/EquipmentPanel/MarginContainer/EquipmentContent/EquipmentGrid" unique_id=474733072]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 110)
 layout_mode = 2

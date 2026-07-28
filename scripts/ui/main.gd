@@ -325,7 +325,15 @@ func start_expedition() -> void:
 	current_event_requires_decision = false
 	tunnel_decision_resolved = false
 
+	mara_trust = 0
+	iven_trust = 0
+	selka_trust = 0
+	orren_trust = 0
+
 	decision_panel.hide()
+
+	end_expedition_button.disabled = false
+	advance_stage_button.disabled = false
 
 	hide_all_screens()
 	expedition_screen.show()
@@ -377,11 +385,10 @@ func update_expedition_screen() -> void:
 	end_expedition_button.visible = is_final_stage
 
 	if current_event_requires_decision:
-		advance_stage_button.disabled = true
-	else:
-		advance_stage_button.disabled = false
-
-	if is_final_stage:
+		expedition_status_label.text = (
+			"A equipe precisa escolher uma rota antes de avançar."
+		)
+	elif is_final_stage:
 		expedition_status_label.text = (
 			"A equipe está retornando. A missão pode ser encerrada."
 		)
@@ -522,10 +529,6 @@ func start_tunnel_decision() -> void:
 		+"e parcialmente inundado.\n\n"
 		+"À direita, marcas de ferramentas levam a uma passagem antiga "
 		+"que parece mais estável, mas não há sinais dos trabalhadores."
-	)
-
-	expedition_status_label.text = (
-		"A equipe precisa escolher uma rota antes de avançar."
 	)
 
 	advance_stage_button.disabled = true
