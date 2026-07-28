@@ -12,12 +12,14 @@ const ADVENTURER_NAMES: Dictionary = {
 }
 
 var selected_team: Array[String] = []
+var last_expedition_result: Dictionary = {}
 
 @onready var home_screen: VBoxContainer = %HomeScreen
 @onready var contract_screen: VBoxContainer = %ContractScreen
 @onready var team_selection_screen: VBoxContainer = %TeamSelectionScreen
 @onready var expedition_setup_screen: VBoxContainer = %ExpeditionSetupScreen
 @onready var expedition_screen: ExpeditionScreen = %ExpeditionScreen
+@onready var report_screen: ReportScreen = %ReportScreen
 
 @onready var start_contract_button: Button = %StartContractButton
 @onready var back_to_home_button: Button = %BackToHomeButton
@@ -64,6 +66,10 @@ func _ready() -> void:
 
 	leader_option.item_selected.connect(_on_leadership_changed)
 	successor_option.item_selected.connect(_on_leadership_changed)
+	
+	report_screen.return_to_guild_requested.connect(
+		_on_return_to_guild_requested
+	)
 
 	for card: Button in adventurer_cards:
 		card.toggled.connect(_on_adventurer_card_toggled)
@@ -79,6 +85,7 @@ func hide_all_screens() -> void:
 	team_selection_screen.hide()
 	expedition_setup_screen.hide()
 	expedition_screen.hide()
+	report_screen.hide()
 
 func show_home_screen() -> void:
 	hide_all_screens()
@@ -252,8 +259,13 @@ func _on_begin_expedition_pressed() -> void:
 	)
 
 func _on_expedition_finished(result: Dictionary) -> void:
-	print("EXPEDIÇÃO CONCLUÍDA")
-	print("Líder: ", result["leader_name"])
-	print("Sucessor: ", result["successor_name"])
-	print("Cargas restantes: ", result["mirror_charges"])
+	last_expedition_result = result.duplicate(true)
+	
+	hide_all_screens()
+	report_screen.show_report(last_expedition_result)
+	
+	print("EXPEDIÇÂO CONCLUIDA")
 	print("Resultado completo: ", result)
+	
+func _on_return_to_guild_requested() -> void:
+	show_home_screen()

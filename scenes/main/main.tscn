@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bf7anpdvmoic0" path="res://scripts/ui/main.gd" id="1_hyk8p"]
 [ext_resource type="Script" uid="uid://bmell18xjbo8n" path="res://scripts/ui/expedition_screen.gd" id="2_iuonh"]
+[ext_resource type="Script" uid="uid://croea8jl5hciw" path="res://scripts/ui/report_screen.gd" id="3_k2fmo"]
 
 [node name="Main" type="Control" unique_id=1530024811]
 layout_mode = 3
@@ -588,5 +589,51 @@ text = "Avançar equipe"
 [node name="EndExpeditionButton" type="Button" parent="ScreenContainer/MainPanel/ExpeditionScreen/ExpeditionActions" unique_id=1336923062]
 unique_name_in_owner = true
 visible = false
+layout_mode = 2
+text = "Retornar à guilda"
+
+[node name="ReportScreen" type="VBoxContainer" parent="ScreenContainer/MainPanel" unique_id=1316157447]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = ExtResource("3_k2fmo")
+
+[node name="ReportTitleLabel" type="Label" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=509731701]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Relatório da Expedição"
+
+[node name="ReportDivider" type="HSeparator" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=561167847]
+layout_mode = 2
+
+[node name="ReportSummaryLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=489761565]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "Resumo da missão."
+fit_content = true
+
+[node name="ReportDiscoveriesLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=907914558]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "Descobertas e consequências."
+fit_content = true
+
+[node name="ReportTrustLabel" type="RichTextLabel" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=24757700]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "Confiança da equipe."
+fit_content = true
+
+[node name="ReportSpacer" type="Control" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=475483039]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ReturnToGuildButton" type="Button" parent="ScreenContainer/MainPanel/ReportScreen" unique_id=1432895055]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 text = "Retornar à guilda"

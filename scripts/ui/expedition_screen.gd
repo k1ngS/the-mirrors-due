@@ -188,7 +188,7 @@ func update_expedition_screen() -> void:
 
 	if current_event_requires_decision:
 		expedition_status_label.text = (
-			"A equipe precisa escolher uma rota antes de avançar."
+			"A equipe aguarda uma decisão antes de avançar."
 		)
 	elif is_final_stage:
 		expedition_status_label.text = (
