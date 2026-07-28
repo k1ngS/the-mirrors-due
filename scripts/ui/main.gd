@@ -4,6 +4,11 @@ const MAX_TEAM_SIZE: int = 3
 const MAX_EQUIPMENT: int = 2
 const MAX_MIRROR_CHARGES: int = 2
 const TUNNEL_STAGE_INDEX: int = 2
+const MIRROR_CHAMBER_STAGE_INDEX: int = 3
+
+const DECISION_NONE: String = ""
+const DECISION_TUNNEL_ROUTE: String = "tunnel_route"
+const DECISION_INJURED_WORKER: String = "injured_worker"
 
 const ADVENTURER_NAMES: Dictionary = {
 	"MaraCard": "Mara Veln",
@@ -101,6 +106,14 @@ var expedition_leader_name: String = ""
 var expedition_successor_name: String = ""
 var expedition_log_entries: Array[String] = []
 var expedition_equipment: Array[String] = []
+var current_decision_type: String = DECISION_NONE
+
+var injured_worker_found: bool = false
+var injured_worker_rescued: bool = false
+var inspection_records_found: bool = false
+
+var survival_order_active: bool = false
+var expedition_has_fragment: bool = false
 
 var current_event_requires_decision: bool = false
 var tunnel_decision_resolved: bool = false
@@ -325,6 +338,15 @@ func start_expedition() -> void:
 	current_event_requires_decision = false
 	tunnel_decision_resolved = false
 
+	current_decision_type = DECISION_NONE
+
+	injured_worker_found = false
+	injured_worker_rescued = false
+	inspection_records_found = false
+
+	survival_order_active = false
+	expedition_has_fragment = false
+
 	mara_trust = 0
 	iven_trust = 0
 	selka_trust = 0
@@ -470,13 +492,15 @@ func _on_send_order_pressed() -> void:
 	if not consume_mirror_charge():
 		return
 
+	survival_order_active = true
+
 	add_expedition_log(
 		"[color=gold][b]Ordem transmitida[/b][/color]\n"
 		+"Você ordena que a equipe permaneça unida e priorize a sobrevivência acima do objetivo."
 	)
 
 	expedition_status_label.text = (
-		"A ordem foi transmitida. Ainda não há garantia de obediência."
+		"A ordem foi transmitida. Cada membro poderá interpretá-la de maneira diferente."
 	)
 
 
@@ -493,6 +517,13 @@ func _on_advance_stage_pressed() -> void:
 
 	if current_expedition_stage == TUNNEL_STAGE_INDEX:
 		start_tunnel_decision()
+
+	elif (
+		current_expedition_stage == MIRROR_CHAMBER_STAGE_INDEX
+		and injured_worker_found
+		and not injured_worker_rescued
+	):
+		start_injured_worker_decision()
 
 	update_expedition_screen()
 
@@ -521,6 +552,7 @@ func start_tunnel_decision() -> void:
 		return
 
 	current_event_requires_decision = true
+	current_decision_type = DECISION_TUNNEL_ROUTE
 	decision_panel.show()
 
 	decision_description.text = (
@@ -540,6 +572,73 @@ func expedition_has_equipment(equipment_id: String) -> bool:
 	return equipment_id in expedition_equipment
 
 func _on_footprints_route_pressed() -> void:
+	match current_decision_type:
+		DECISION_TUNNEL_ROUTE:
+			resolve_footprints_route()
+		DECISION_INJURED_WORKER:
+			resolve_worker_rescue()
+		_:
+			push_warning("Nenhuma decisão válida está ativa.")
+
+func _on_tool_marks_route_pressed() -> void:
+	match current_decision_type:
+		DECISION_TUNNEL_ROUTE:
+			resolve_tool_marks_route()
+		DECISION_INJURED_WORKER:
+			resolve_abandon_worker()
+		_:
+			push_warning("Nenhuma decisão válida está ativa.")
+
+func resolve_tunnel_decision(result_lines: Array[String]) -> void:
+	tunnel_decision_resolved = true
+	current_event_requires_decision = false
+	current_decision_type = DECISION_NONE
+
+	decision_panel.hide()
+	advance_stage_button.disabled = false
+
+	add_expedition_log(
+		"\n".join(result_lines)
+	)
+
+	expedition_status_label.text = (
+		"A rota foi escolhida. A equipe pode continuar."
+	)
+
+	print_relationship_debug()
+
+func print_relationship_debug() -> void:
+	print("CONFIANÇA ATUAL")
+	print("Mara: ", mara_trust)
+	print("Iven: ", iven_trust)
+	print("Selka: ", selka_trust)
+	print("Orren: ", orren_trust)
+
+func start_injured_worker_decision() -> void:
+	current_event_requires_decision = true
+	current_decision_type = DECISION_INJURED_WORKER
+
+	decision_panel.show()
+
+	decision_description.text = (
+		"[b]O trabalhador não consegue continuar andando.[/b]\n\n"
+		+"Ao mesmo tempo, a estrutura ritualística aparece logo adiante. "
+		+"Levá-lo de volta agora pode impedir que a equipe examine "
+		+"a câmara.\n\n"
+		+"Selka exige que o grupo inicie a retirada. Orren afirma que "
+		+"o homem pode esperar alguns minutos."
+	)
+
+	footprints_route_button.text = "Resgatar o trabalhador"
+	tool_marks_route_button.text = "Priorizar a câmara"
+
+	expedition_status_label.text = (
+		"A equipe aguarda sua decisão sobre o trabalhador."
+	)
+
+	advance_stage_button.disabled = true
+
+func resolve_footprints_route() -> void:
 	var result_lines: Array[String] = []
 
 	result_lines.append(
@@ -580,6 +679,8 @@ func _on_footprints_route_pressed() -> void:
 		)
 
 	if success_score >= 3:
+		injured_worker_found = true
+
 		result_lines.append(
 			"\n[b]Resultado:[/b] a equipe encontra um trabalhador "
 			+"ferido, mas ainda vivo."
@@ -594,9 +695,7 @@ func _on_footprints_route_pressed() -> void:
 
 		mara_trust -= 1
 
-	resolve_tunnel_decision(result_lines)
-
-func _on_tool_marks_route_pressed() -> void:
+func resolve_tool_marks_route() -> void:
 	var result_lines: Array[String] = []
 
 	result_lines.append(
@@ -639,6 +738,8 @@ func _on_tool_marks_route_pressed() -> void:
 		)
 
 	if success_score >= 3:
+		inspection_records_found = true
+
 		result_lines.append(
 			"\n[b]Resultado:[/b] a equipe encontra os registros "
 			+"da inspeção e provas de que o contratante omitiu riscos."
@@ -649,28 +750,135 @@ func _on_tool_marks_route_pressed() -> void:
 			+"e precisa retornar sem os registros."
 		)
 
-	resolve_tunnel_decision(result_lines)
+func resolve_worker_rescue() -> void:
+	var result_lines: Array[String] = []
 
-func resolve_tunnel_decision(result_lines: Array[String]) -> void:
-	tunnel_decision_resolved = true
+	result_lines.append(
+		"[color=light_blue][b]"
+		+"Você ordena o resgate imediato do trabalhador."
+		+"[/b][/color]"
+	)
+
+	injured_worker_rescued = true
+
+	if team_has_adventurer("SelkaCard"):
+		selka_trust += 2
+
+		result_lines.append(
+			"Selka estabiliza o trabalhador e aprova sua decisão."
+		)
+
+	if team_has_adventurer("MaraCard"):
+		mara_trust += 1
+
+		result_lines.append(
+			"Mara reorganiza a formação para proteger a retirada."
+		)
+
+	if team_has_adventurer("OrrenCard"):
+		orren_trust -= 1
+
+		result_lines.append(
+			"Orren protesta que a companhia está abandonando "
+			+"uma oportunidade valiosa."
+		)
+
+	if expedition_has_equipment("MedicalKitEquipment"):
+		result_lines.append(
+			"O kit médico reduz o risco de o trabalhador morrer "
+			+"durante o retorno."
+		)
+	else:
+		result_lines.append(
+			"Sem um kit médico, o trabalhador permanece em estado grave."
+		)
+
+	result_lines.append(
+		"\n[b]Consequência:[/b] a equipe salva o trabalhador, "
+		+"mas terá menos tempo para investigar a câmara."
+	)
+
+	resolve_worker_decision(result_lines)
+
+func resolve_abandon_worker() -> void:
+	var result_lines: Array[String] = []
+
+	result_lines.append(
+		"[color=gold][b]"
+		+"Você ordena que a equipe priorize a câmara."
+		+"[/b][/color]"
+	)
+
+	var order_obeyed: bool = true
+
+	if team_has_adventurer("SelkaCard"):
+		var selka_resistance: int = 3
+
+		if survival_order_active:
+			selka_resistance += 2
+
+		if expedition_leader_name == "Mara Veln":
+			selka_resistance += 1
+
+		if selka_trust < 0:
+			selka_resistance += 1
+
+		if selka_resistance >= 5:
+			order_obeyed = false
+
+			result_lines.append(
+				"Selka se recusa a abandonar o trabalhador. Ela afirma "
+				+"que sua ordem anterior para priorizar sobrevivência "
+				+"também se aplica a ele."
+			)
+
+	if not order_obeyed:
+		injured_worker_rescued = true
+		selka_trust -= 1
+		orren_trust -= 1
+
+		result_lines.append(
+			"Mara hesita, mas permite que Selka organize a retirada. "
+			+"Sua ordem não é cumprida."
+		)
+
+		result_lines.append(
+			"\n[b]Consequência:[/b] o trabalhador é resgatado, "
+			+"mas sua autoridade sobre a equipe é enfraquecida."
+		)
+	else:
+		expedition_has_fragment = true
+		selka_trust -= 2
+		orren_trust += 1
+
+		result_lines.append(
+			"A equipe deixa o trabalhador para trás temporariamente "
+			+"e examina a estrutura."
+		)
+
+		result_lines.append(
+			"Orren recupera um fragmento ritualístico antes que "
+			+"a câmara comece a desabar."
+		)
+
+		result_lines.append(
+			"\n[b]Consequência:[/b] a companhia obtém um fragmento, "
+			+"mas o estado do trabalhador se agrava."
+		)
+
+	resolve_worker_decision(result_lines)
+
+func resolve_worker_decision(result_lines: Array[String]) -> void:
 	current_event_requires_decision = false
+	current_decision_type = DECISION_NONE
 
 	decision_panel.hide()
 	advance_stage_button.disabled = false
 
-	add_expedition_log(
-		"\n".join(result_lines)
-	)
+	add_expedition_log("\n".join(result_lines))
 
 	expedition_status_label.text = (
-		"A rota foi escolhida. A equipe pode continuar."
+		"A situação foi resolvida. A equipe pode continuar."
 	)
 
 	print_relationship_debug()
-
-func print_relationship_debug() -> void:
-	print("CONFIANÇA ATUAL")
-	print("Mara: ", mara_trust)
-	print("Iven: ", iven_trust)
-	print("Selka: ", selka_trust)
-	print("Orren: ", orren_trust)
