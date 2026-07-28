@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://k6ocbaibu0jf"]
 
 [ext_resource type="Script" uid="uid://bf7anpdvmoic0" path="res://scripts/ui/main.gd" id="1_hyk8p"]
+[ext_resource type="Script" uid="uid://bmell18xjbo8n" path="res://scripts/ui/expedition_screen.gd" id="2_iuonh"]
 
 [node name="Main" type="Control" unique_id=1530024811]
 layout_mode = 3
@@ -392,6 +393,7 @@ text = "Iniciar expedição"
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+script = ExtResource("2_iuonh")
 
 [node name="ExpeditionTitle" type="Label" parent="ScreenContainer/MainPanel/ExpeditionScreen" unique_id=288349693]
 layout_mode = 2
